@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "368227052345",
+    "project_id": "login-register-d2e7a",
+    "storage_bucket": "login-register-d2e7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368227052345:android:81b5f659622899b2b856e8",
+        "android_client_info": {
+          "package_name": "com.store.afinal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH0rgrTJ-mNgJt6Y7JfMNsfVnqp85odxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368227052345:android:f7e9ad12dd1bb178b856e8",
+        "android_client_info": {
+          "package_name": "com.store.thenote"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH0rgrTJ-mNgJt6Y7JfMNsfVnqp85odxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
