@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Register.class);
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
 
 
                  String studentname, studentid;
