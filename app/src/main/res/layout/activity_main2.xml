@@ -32,14 +32,6 @@
         tools:layout_editor_absoluteY="667dp"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GO BACK"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="667dp"
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

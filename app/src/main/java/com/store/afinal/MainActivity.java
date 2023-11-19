@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    public static final String SHARED_PREFS = "sharedPrefs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                  if(TextUtils.isEmpty(studentname)){
+                     
+
                      Toast.makeText(MainActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
                      return;
                  }
