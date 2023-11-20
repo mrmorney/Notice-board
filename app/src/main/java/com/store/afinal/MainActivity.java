@@ -2,8 +2,10 @@ package com.store.afinal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,17 +33,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         setContentView(R.layout.activity_main);
+
+       getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
 
         editTextEmail = findViewById(R.id.studentname);
         editText = findViewById(R.id.studentid);
         login = (MaterialButton) findViewById(R.id.login);
 
+        checkBox();
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+
+                editor.putString("name","true");
+                editor.apply();
 
 
                  String studentname, studentid;
@@ -54,13 +70,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                  if(TextUtils.isEmpty(studentname)){
-                     
+
 
                      Toast.makeText(MainActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
                      return;
                  }
 
                 if(TextUtils.isEmpty(studentid)){
+
+
                     Toast.makeText(MainActivity.this, "Enter correct id", Toast.LENGTH_SHORT).show();
 
 
@@ -86,6 +104,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void checkBox() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String check = sharedPreferences.getString("name","");
+        if(check.equals("true")){
+            Toast.makeText(MainActivity.this, "auto login successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }
