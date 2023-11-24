@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editText,editTextEmail;
 
     MaterialButton login;
+    Button tree;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -44,8 +46,16 @@ public class MainActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.studentname);
         editText = findViewById(R.id.studentid);
         login = (MaterialButton) findViewById(R.id.login);
+        tree = findViewById(R.id.tree);
 
         checkBox();
+
+        tree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNextActivity();
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-
                 editor.putString("name","true");
                 editor.apply();
+
 
 
                  String studentname, studentid;
@@ -115,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void openNextActivity(){
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
     }
 
 }

@@ -36,6 +36,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     Button logout;
+    Button butto;
     ListView listView;
     Context context;
     ImageView no;
@@ -52,18 +53,16 @@ public class Main2Activity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         no = (ImageView) findViewById(R.id.no);
         handler = new Handler();
+        butto = findViewById(R.id.butto);
 
 
 
-         no();
-
-         handler.postDelayed(new Runnable() {
-             @Override
-             public void run() {
-                 no();
-                 handler.postDelayed(this,2000);
-             }
-         }, 2000);
+       butto.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               openNextActivity();
+           }
+       });
 
 
 
@@ -111,6 +110,8 @@ public class Main2Activity extends AppCompatActivity {
             Toast.makeText(Main2Activity.this, "No internet access",Toast.LENGTH_SHORT).show();
         }
 
+
+
     }
 
     private void no() {
@@ -129,6 +130,9 @@ public class Main2Activity extends AppCompatActivity {
         return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
        }
 
-
+               private void openNextActivity(){
+                  Intent intent = new Intent(this, Event3.class);
+                  startActivity(intent);
+               }
 
 }
