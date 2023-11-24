@@ -1,39 +1,71 @@
 package com.store.afinal;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.net.NetworkInfo;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import org.imaginativeworld.oopsnointernet.callbacks.ConnectionCallback;
-import org.imaginativeworld.oopsnointernet.dialogs.pendulum.DialogPropertiesPendulum;
-import org.imaginativeworld.oopsnointernet.dialogs.pendulum.NoInternetDialogPendulum;
-import org.imaginativeworld.oopsnointernet.dialogs.signal.DialogPropertiesSignal;
-import org.imaginativeworld.oopsnointernet.dialogs.signal.NoInternetDialogSignal;
-import org.imaginativeworld.oopsnointernet.snackbars.fire.NoInternetSnackbarFire;
-import org.imaginativeworld.oopsnointernet.snackbars.fire.SnackbarPropertiesFire;
+import java.util.ArrayList;
+
+
 
 public class Main2Activity extends AppCompatActivity {
-RelativeLayout rr;
+
     public static final String SHARED_PREFS = "sharedPrefs";
 
 
-    Button logout;
 
+    Button logout;
+    ListView listView;
+    Context context;
+    ImageView no;
+     int count = 0;
+     Handler handler;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        rr=findViewById(R.id.rr);
-
 
         logout = findViewById(R.id.logout);
+        listView = findViewById(R.id.listview);
+        no = (ImageView) findViewById(R.id.no);
+        handler = new Handler();
+
+
+
+         no();
+
+         handler.postDelayed(new Runnable() {
+             @Override
+             public void run() {
+                 no();
+                 handler.postDelayed(this,2000);
+             }
+         }, 2000);
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,34 +79,56 @@ RelativeLayout rr;
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
-                NoInternetDialog();
+
             }
         });
-    }
+        ArrayList<String> list = new ArrayList<>();
+        ArrayAdapter adapter = new ArrayAdapter<String>(this ,R.layout.list_item , list);
+        listView.setAdapter(adapter);
 
-    private void NoInternetDialog() {
-        Object binding;
-        NoInternetSnackbarFire.Builder builder = new NoInternetSnackbarFire.Builder(
-                rr,
-                getLifecycle()
-        );
-
-        SnackbarPropertiesFire properties = builder.getSnackbarProperties();
-
-        properties.setConnectionCallback(new ConnectionCallback() { // Optional
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("message");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void hasActiveConnection(boolean hasActiveConnection) {
-                // ...
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                list.clear();
+                for (DataSnapshot snapshot : datasnapshot.getChildren()){
+                    list.add(snapshot.getValue().toString());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+        if (isConnected()){
+            no.setVisibility(View.GONE);
+            Toast.makeText(Main2Activity.this, "",Toast.LENGTH_SHORT).show();
+        }
+        else  {
+            no.setVisibility(View.VISIBLE);
+            Toast.makeText(Main2Activity.this, "No internet access",Toast.LENGTH_SHORT).show();
+        }
 
-        properties.setDuration(Snackbar.LENGTH_INDEFINITE); // Optional
-        properties.setNoInternetConnectionMessage("No active Internet connection!"); // Optional
-        properties.setOnAirplaneModeMessage("You have turned on the airplane mode!"); // Optional
-        properties.setSnackbarActionText("Settings"); // Optional
-        properties.setShowActionToDismiss(false); // Optional
-        properties.setSnackbarDismissActionText("OK"); // Optional
-
-        builder.build();
     }
+
+    private void no() {
+
+    }
+      protected void onDestroy(){
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+      }
+
+
+
+    private boolean isConnected(){
+           ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+       }
+
+
+
 }

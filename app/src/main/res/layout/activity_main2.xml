@@ -4,40 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rr"
     android:background="#DCE3E3E3"
     tools:context=".Main2Activity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No Internet Snackbar: Fire"
-        android:textColor="@color/black"
-        android:textSize="25dp" />
+
 
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="295dp"
         android:layout_height="48dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="none"
+        android:editable="false"
         android:text="       ANNOUNCEMENT!!!"
+        android:layout_marginLeft="60dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        android:layout_marginTop="60dp"
+        tools:ignore="Deprecated" />
+
+          <ListView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="50dp"
+              android:layout_marginTop="120dp"
+              android:id="@+id/listview"
+              />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LogOut"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_alignParentEnd="true"
         tools:ignore="MissingConstraints" />
 
 
@@ -46,12 +43,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SPECIAL EVENTS COMING UP"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:ignore="MissingConstraints" />
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/no"
+        android:src="@drawable/no2"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>
