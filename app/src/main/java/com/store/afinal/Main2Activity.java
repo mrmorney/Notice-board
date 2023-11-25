@@ -40,8 +40,8 @@ public class Main2Activity extends AppCompatActivity {
     ListView listView;
     Context context;
     ImageView no;
-     int count = 0;
-     Handler handler;
+    int count = 0;
+    Handler handler;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -57,12 +57,12 @@ public class Main2Activity extends AppCompatActivity {
 
 
 
-       butto.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               openNextActivity();
-           }
-       });
+        butto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNextActivity();
+            }
+        });
 
 
 
@@ -117,22 +117,22 @@ public class Main2Activity extends AppCompatActivity {
     private void no() {
 
     }
-      protected void onDestroy(){
+    protected void onDestroy(){
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-      }
+    }
 
 
 
     private boolean isConnected(){
-           ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(context.CONNECTIVITY_SERVICE);
 
         return connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
-       }
+    }
 
-               private void openNextActivity(){
-                  Intent intent = new Intent(this, Event3.class);
-                  startActivity(intent);
-               }
+    private void openNextActivity(){
+        Intent intent = new Intent(this, Event3.class);
+        startActivity(intent);
+    }
 
 }

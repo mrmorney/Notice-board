@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openNextActivity(){
-        Intent intent = new Intent(this, Register.class);
+        Intent intent = new Intent(this, Admin.class);
         startActivity(intent);
     }
 
