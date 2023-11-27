@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                  if(TextUtils.isEmpty(studentname)){
-
-
                      Toast.makeText(MainActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
                      return;
-                 }
+                 }else if (!studentname.matches(".*[0-9]*.")){
+                     Toast.makeText(MainActivity.this, "Enter your valid name", Toast.LENGTH_SHORT).show();
+                     return;
+                }
+
 
                 if(TextUtils.isEmpty(studentid)){
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }if (!studentid.matches(".*[A-Z0-9].*")) {
 
-                    Toast.makeText(MainActivity.this, "invalid credentail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "invalid id", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
