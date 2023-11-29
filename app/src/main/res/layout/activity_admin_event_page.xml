@@ -9,18 +9,6 @@
 
 
 
-    <EditText
-        android:id="@+id/editTextTextPersonName4"
-        android:layout_width="215dp"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="     EVENT UPDATE"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#F44336"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        />
 
 
 

@@ -2,10 +2,13 @@ package com.store.afinal;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionBarPolicy;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -13,15 +16,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.net.NetworkInfo;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +61,8 @@ public class AdminAnnounPage extends AppCompatActivity {
 
 
 
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +77,10 @@ public class AdminAnnounPage extends AppCompatActivity {
         add = findViewById(R.id.add);
         edit = findViewById(R.id.edit);
 
+
         DatabaseReference firebaseRef = FirebaseDatabase.getInstance().getReference("message");
+
+
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +132,34 @@ public class AdminAnnounPage extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<String>(this ,R.layout.list_item , list);
         listView.setAdapter(adapter);
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final String selectedItem = (String) parent .getItemAtPosition(position);
+
+                new AlertDialog.Builder(AdminAnnounPage.this)
+                        .setTitle("Confirm Deletion")
+                        .setMessage("Are you sure you want to delete this item")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                               FirebaseDatabase.getInstance().getReference().child("message").removeValue();
+
+                               adapter.remove("adapter");
+                               adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no,null)
+                        .show();
+
+                return true;
+            }
+        });
+
+
+
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("message");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,6 +176,7 @@ public class AdminAnnounPage extends AppCompatActivity {
 
             }
         });
+
         if (isConnected()){
             no.setVisibility(View.GONE);
             Toast.makeText(AdminAnnounPage.this, "",Toast.LENGTH_SHORT).show();
