@@ -131,7 +131,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void openNextActivity(){
-        Intent intent = new Intent(this, Event3.class);
+        Intent intent = new Intent(this, ShowActivity.class);
         startActivity(intent);
     }
 

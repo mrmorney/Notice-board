@@ -28,7 +28,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="name"
+        android:hint="Add new announcement"
         android:id="@+id/edit"
         android:layout_marginTop="10dp"
         android:layout_marginRight="90dp"/>

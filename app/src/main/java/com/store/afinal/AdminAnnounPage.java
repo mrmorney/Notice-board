@@ -2,16 +2,21 @@ package com.store.afinal;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionBarPolicy;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.net.NetworkInfo;
@@ -30,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,6 +64,7 @@ public class AdminAnnounPage extends AppCompatActivity {
     Handler handler;
     Button add;
     EditText edit;
+    int id = 0;
 
 
 
@@ -68,6 +75,8 @@ public class AdminAnnounPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_announ_page);
+
+
 
         logout = findViewById(R.id.logout);
         listView = findViewById(R.id.listview);
@@ -91,8 +100,9 @@ public class AdminAnnounPage extends AppCompatActivity {
                 String key = firebaseRef.push().getKey();
 
                 firebaseRef.child(key).setValue(text);
-                
+
                 edit.setText("");
+
             }
         });
 
@@ -164,6 +174,10 @@ public class AdminAnnounPage extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                if (datasnapshot.exists()){
+                    id = (int) datasnapshot.getChildrenCount();
+                }
+
                 list.clear();
                 for (DataSnapshot snapshot : datasnapshot.getChildren()){
                     list.add(snapshot.getValue().toString());
@@ -176,6 +190,8 @@ public class AdminAnnounPage extends AppCompatActivity {
 
             }
         });
+
+
 
         if (isConnected()){
             no.setVisibility(View.GONE);
@@ -207,7 +223,7 @@ public class AdminAnnounPage extends AppCompatActivity {
     }
 
     private void openNextActivity(){
-        Intent intent = new Intent(this, Event3.class);
+        Intent intent = new Intent(this, AdminEventPage.class);
         startActivity(intent);
     }
 
