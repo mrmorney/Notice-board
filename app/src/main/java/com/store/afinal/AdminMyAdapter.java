@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,18 +18,18 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class AdminMyAdapter extends RecyclerView.Adapter<AdminMyAdapter.MyViewHolder> {
 
-       private ArrayList<Model> mList;
-       private Context context;
+    private ArrayList<Model> mList;
+    private Context context;
 
-       private static OnItemClickListener mListener;
+    private static OnItemClickListener mListener;
 
 
-       public  MyAdapter(Context context, ArrayList<Model> mList){
-           this.context = context;
-           this.mList = mList;
-       }
+    public  AdminMyAdapter(Context context, ArrayList<Model> mList){
+        this.context = context;
+        this.mList = mList;
+    }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,18 +41,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Glide.with(context).load(mList.get(position).getImageUrl()).into(holder.imageView);
 
-
     }
 
     @Override
     public int getItemCount() {
-       return mList.size();
+        return mList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
-                ImageView imageView;
-                TextView textView;
+        ImageView imageView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -65,53 +62,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         @Override
         public void onClick(View v) {
-            if (mListener != null){
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION){
-                    mListener.onItemClick(position);
-                }
-            }
+
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select Action");
-            MenuItem doWhatever = menu.add(Menu.NONE, 1, 1,"Do whatever");
-            MenuItem delete = menu .add(Menu.NONE,2,2,"delete");
 
-            doWhatever.setOnMenuItemClickListener(this);
-            delete.setOnMenuItemClickListener(this);
         }
 
         @Override
         public boolean onMenuItemClick(@NonNull MenuItem item) {
-            if (mListener != null){
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION){
 
-                    switch (item.getItemId()){
-                        case 1:
-                            mListener.onWhatEverclick(position);
-                            return true;
-                        case 2:
-                            mListener.onDeleteClick(position);
-                            return true;
-                    }
-                }
-            }
             return false;
         }
     }
 
     public interface OnItemClickListener {
-           void onItemClick(int position);
 
-           void onWhatEverclick(int position);
-
-           void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
-       mListener = listener;
+        mListener = listener;
     }
 }

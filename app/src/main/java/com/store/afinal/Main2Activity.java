@@ -131,7 +131,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     private void openNextActivity(){
-        Intent intent = new Intent(this, ShowActivity.class);
+        Intent intent = new Intent(this, AdminShowActivity.class);
         startActivity(intent);
     }
 

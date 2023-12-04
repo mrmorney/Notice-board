@@ -1,10 +1,12 @@
 package com.store.afinal;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -19,27 +21,28 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class ShowActivity extends AppCompatActivity implements MyAdapter.OnItemClickListener {
-          private RecyclerView  recyclerView;
-          private ArrayList<Model> list;
-          private MyAdapter adapter;
-          private DatabaseReference root = FirebaseDatabase.getInstance().getReference("images/");
-          private ValueEventListener mDBListener;
-          private FirebaseStorage mStorage;
+public class AdminShowActivity extends AppCompatActivity implements AdminMyAdapter.OnItemClickListener {
+    private RecyclerView  recyclerView;
+    private ArrayList<Model> list;
+    private AdminMyAdapter adapter;
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("images/");
+    private ValueEventListener mDBListener;
+    private FirebaseStorage mStorage;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show);
+        setContentView(R.layout.activity_admin_show);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
-        adapter = new MyAdapter(this,list);
+        adapter = new AdminMyAdapter(this,list);
         recyclerView.setAdapter(adapter);
         mStorage = FirebaseStorage.getInstance();
 
-       mDBListener = root.addValueEventListener(new ValueEventListener() {
+        mDBListener = root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
@@ -50,7 +53,7 @@ public class ShowActivity extends AppCompatActivity implements MyAdapter.OnItemC
                     list.add(model);
                 }
                 adapter.notifyDataSetChanged();
-                adapter.setOnItemClickListener(ShowActivity.this);
+                adapter.setOnItemClickListener(AdminShowActivity.this);
             }
 
             @Override
@@ -61,35 +64,20 @@ public class ShowActivity extends AppCompatActivity implements MyAdapter.OnItemC
 
     }
 
-    @Override
+
     public void onItemClick(int position) {
-        Toast.makeText(this, "Normal click" + position, Toast.LENGTH_SHORT).show();
+
     }
 
-    @Override
+
     public void onWhatEverclick(int position) {
-        Toast.makeText(this, "whatever click" + position, Toast.LENGTH_SHORT).show();
+
     }
 
-    @Override
+
     public void onDeleteClick(int position) {
-        Model selectedItem = list.get(position);
-        String selectedKey = selectedItem.getKey();
 
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
-        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                root.child(selectedKey).removeValue();
-                Toast.makeText(ShowActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        root.removeEventListener(mDBListener);
-    }
 }

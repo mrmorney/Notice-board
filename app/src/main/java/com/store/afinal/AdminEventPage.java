@@ -7,12 +7,19 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -30,8 +37,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -52,6 +63,11 @@ public class AdminEventPage extends AppCompatActivity {
     private FirebaseStorage mStorage;
     private Button delete;
     private Handler handler;
+    private EditText edit;
+
+    int id = 0;
+
+    Member2 member;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -66,6 +82,9 @@ public class AdminEventPage extends AppCompatActivity {
         show = findViewById(R.id.text_show);
         progressBar.setVisibility(View.INVISIBLE);
           mStorage =FirebaseStorage.getInstance();
+               edit = findViewById(R.id.edit);
+        member = new Member2();
+
 
 
 
@@ -87,15 +106,63 @@ public class AdminEventPage extends AppCompatActivity {
         });
 
         uploadBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 if (imageUri != null){
-                    uploadToFirebase(imageUri);
+                   uploadToFirebase(imageUri);
                 }else {
                     Toast.makeText(AdminEventPage.this, "Please select Image", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        root.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+                if (datasnapshot.exists()) {
+                    id = (int) datasnapshot.getChildrenCount();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String name = edit.getText().toString();
+                notification();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
 
@@ -123,6 +190,8 @@ public class AdminEventPage extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
 
+                        String text = edit.getText().toString();
+                        String imageUri = toString();
                         Model model = new Model(uri.toString());
                         String modelId = root .push().getKey();
                         root.child(modelId).setValue(model);
@@ -158,5 +227,32 @@ public class AdminEventPage extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
+    }
+    private void notification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel =
+                    new NotificationChannel("n", "n", NotificationManager.IMPORTANCE_DEFAULT);
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "n")
+                .setContentText("update")
+                .setSmallIcon(R.drawable.logo2)
+                .setAutoCancel(true)
+                .setContentText("There is a New Event update!!!");
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        managerCompat.notify(999, builder.build());
     }
 }

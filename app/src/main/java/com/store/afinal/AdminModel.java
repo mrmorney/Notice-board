@@ -2,22 +2,20 @@ package com.store.afinal;
 
 import com.google.firebase.database.Exclude;
 
-public class Model {
+public class AdminModel {
 
     private String imageUrl;
     private String mKey;
     private String StorageKey;
-    private String mName;
 
 
-    public Model(){
+    public AdminModel(){
 
     }
-    public Model(String imageUrl){
-
+    public AdminModel(String imageUrl){
         this.imageUrl = imageUrl;
-
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -26,14 +24,6 @@ public class Model {
         this.imageUrl = imageUrl;
     }
 
-    @Exclude
-    public  String getKey() {
-        return mKey;
-    }
-    @Exclude
-    public void setKey(String key){
-        mKey = key;
-    }
 
     public String getStorageKey() {
         return StorageKey;
