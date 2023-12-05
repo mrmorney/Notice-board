@@ -14,10 +14,13 @@ import androidx.core.app.NotificationManagerCompat;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.Image;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,6 +55,7 @@ import com.squareup.picasso.Picasso;
 import java.util.UUID;
 
 public class AdminEventPage extends AppCompatActivity {
+    BroadcastReceiver broadcastReceiver;
 
     private  Button uploadBtn, showAllBtn, show;
     private ImageView imageView;
@@ -75,6 +79,9 @@ public class AdminEventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_event_page);
 
+        broadcastReceiver = new ConnectionReceiver();
+        registorNetworkBroadcast();
+
         uploadBtn = findViewById(R.id.upload);
         showAllBtn = findViewById(R.id.choose_image);
         imageView = findViewById(R.id.image_view);
@@ -84,6 +91,7 @@ public class AdminEventPage extends AppCompatActivity {
           mStorage =FirebaseStorage.getInstance();
                edit = findViewById(R.id.edit);
         member = new Member2();
+
 
 
 
@@ -134,6 +142,8 @@ public class AdminEventPage extends AppCompatActivity {
             }
         });
 
+
+
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -162,6 +172,8 @@ public class AdminEventPage extends AppCompatActivity {
 
             }
         });
+
+
 
 
 
@@ -254,5 +266,23 @@ public class AdminEventPage extends AppCompatActivity {
             return;
         }
         managerCompat.notify(999, builder.build());
+    }
+    protected void registorNetworkBroadcast(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            registerReceiver(broadcastReceiver,new IntentFilter((ConnectivityManager.CONNECTIVITY_ACTION)));
+        }
+    }
+    protected void unregistorNetwork(){
+        try {
+            unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregistorNetwork();
     }
 }

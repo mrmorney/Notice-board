@@ -14,9 +14,11 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -58,7 +60,7 @@ import java.util.Random;
 
 
 public class AdminAnnounPage extends AppCompatActivity {
-
+    BroadcastReceiver broadcastReceiver;
     public static final String SHARED_PREFS = "sharedPrefs";
 
 
@@ -81,6 +83,8 @@ public class AdminAnnounPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_announ_page);
+        broadcastReceiver = new ConnectionReceiver();
+        registorNetworkBroadcast();
 
 
         logout = findViewById(R.id.logout);
@@ -260,10 +264,10 @@ public class AdminAnnounPage extends AppCompatActivity {
 
     }
 
-    protected void onDestroy() {
+    /*protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-    }
+    }*/
 
 
     private boolean isConnected() {
@@ -304,4 +308,22 @@ public class AdminAnnounPage extends AppCompatActivity {
         }
         managerCompat.notify(999, builder.build());
    }
+    protected void registorNetworkBroadcast(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            registerReceiver(broadcastReceiver,new IntentFilter((ConnectivityManager.CONNECTIVITY_ACTION)));
+        }
+    }
+    protected void unregistorNetwork(){
+        try {
+            unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregistorNetwork();
+    }
 }

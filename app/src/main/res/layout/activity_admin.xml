@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/name"
                 android:layout_height="48dp"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 />
 
             <View
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:id="@+id/password"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 />
 
 

@@ -1,13 +1,18 @@
 package com.store.afinal;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.net.NetworkInfo;
@@ -30,7 +35,7 @@ import java.util.ArrayList;
 
 
 public class Main2Activity extends AppCompatActivity {
-
+    BroadcastReceiver broadcastReceiver;
     public static final String SHARED_PREFS = "sharedPrefs";
 
 
@@ -48,6 +53,8 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        broadcastReceiver = new ConnectionReceiver();
+        registorNetworkBroadcast();
 
         logout = findViewById(R.id.logout);
         listView = findViewById(R.id.listview);
@@ -117,10 +124,10 @@ public class Main2Activity extends AppCompatActivity {
     private void no() {
 
     }
-    protected void onDestroy(){
+    /*protected void onDestroy(){
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-    }
+    }*/
 
 
 
@@ -134,5 +141,38 @@ public class Main2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, AdminShowActivity.class);
         startActivity(intent);
     }
+    protected void registorNetworkBroadcast(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            registerReceiver(broadcastReceiver,new IntentFilter((ConnectivityManager.CONNECTIVITY_ACTION)));
+        }
+    }
+    protected void unregistorNetwork(){
+        try {
+            unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregistorNetwork();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit")
+                .setCancelable(false)
+                .setNegativeButton(android.R.string.no,null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Main2Activity.super.onBackPressed();
+                    }
+                }).create().show();
+
+    }
 }
