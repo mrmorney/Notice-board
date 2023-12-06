@@ -5,8 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DCE3E3E3"
+    android:id="@+id/drawerLayout"
     tools:context=".Main2Activity">
 
+
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-2317082415976404/2661826933">
+    </com.google.android.gms.ads.AdView>
 
 
     <EditText
@@ -51,6 +62,7 @@
         android:layout_centerInParent="true"
         android:id="@+id/no"
         android:visibility="gone"/>
+
 
 
 </RelativeLayout>

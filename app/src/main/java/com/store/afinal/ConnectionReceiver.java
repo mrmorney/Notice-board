@@ -20,7 +20,7 @@ public class ConnectionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         mContext = context;
         if (isConnecteds(context)){
-            Toast.makeText(context, "Internet Connected", Toast.LENGTH_SHORT).show();
+
         }else {
             showDialog();
         }

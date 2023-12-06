@@ -20,9 +20,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +46,7 @@ public class Main2Activity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
 
 
-
+    private AdView mAdView;
     Button logout;
     Button butto;
     ListView listView;
@@ -47,12 +54,28 @@ public class Main2Activity extends AppCompatActivity {
     ImageView no;
     int count = 0;
     Handler handler;
+    RelativeLayout relativeLayout;
+    ImageView menu;
+    LinearLayout home,setting,share,about,logouts;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+
         broadcastReceiver = new ConnectionReceiver();
         registorNetworkBroadcast();
 
@@ -70,6 +93,7 @@ public class Main2Activity extends AppCompatActivity {
                 openNextActivity();
             }
         });
+
 
 
 
@@ -110,7 +134,7 @@ public class Main2Activity extends AppCompatActivity {
         });
         if (isConnected()){
             no.setVisibility(View.GONE);
-            Toast.makeText(Main2Activity.this, "",Toast.LENGTH_SHORT).show();
+
         }
         else  {
             no.setVisibility(View.VISIBLE);
@@ -120,6 +144,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
     }
+
 
     private void no() {
 
@@ -175,4 +200,6 @@ public class Main2Activity extends AppCompatActivity {
                 }).create().show();
 
     }
+
+
 }

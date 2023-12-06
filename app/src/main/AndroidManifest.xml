@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,14 +18,14 @@
         android:theme="@style/Theme.Final"
         tools:targetApi="31">
 
-        <receiver android:name=".ConnectionReceiver"
+
+        <receiver
+            android:name=".ConnectionReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-
 
         <activity
             android:name=".ConnectionReceiver"
@@ -35,9 +36,7 @@
         <activity
             android:name=".ShowActivity"
             android:exported="false" />
-        <activity
-            android:name=".ImagesActivity"
-            android:exported="false" />
+
         <activity
             android:name=".AdminEventPage"
             android:exported="false" />
@@ -50,9 +49,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-        <activity
-            android:name=".Event3"
-            android:exported="false" />
+
         <activity
             android:name=".Main2Activity"
             android:exported="false" />
@@ -68,6 +65,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2317082415976404~5770409849"/>
+
     </application>
 
 </manifest>
