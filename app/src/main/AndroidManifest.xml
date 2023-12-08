@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Final"
         tools:targetApi="31">
-
+        <activity
+            android:name=".RegisterPage"
+            android:exported="false" />
 
         <receiver
             android:name=".ConnectionReceiver"
@@ -36,7 +38,6 @@
         <activity
             android:name=".ShowActivity"
             android:exported="false" />
-
         <activity
             android:name=".AdminEventPage"
             android:exported="false" />
@@ -49,7 +50,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
         <activity
             android:name=".Main2Activity"
             android:exported="false" />
@@ -68,8 +68,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2317082415976404~5770409849"/>
-
+            android:value="ca-app-pub-2317082415976404~5770409849" />
     </application>
 
 </manifest>

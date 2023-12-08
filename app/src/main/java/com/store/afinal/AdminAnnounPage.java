@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -288,7 +289,13 @@ public class AdminAnnounPage extends AppCompatActivity {
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
+
+
+
         }
+
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "n")
                 .setContentText("update")
                 .setSmallIcon(R.drawable.logo2)
